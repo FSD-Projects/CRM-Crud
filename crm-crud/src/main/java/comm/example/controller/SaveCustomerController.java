@@ -15,23 +15,47 @@ import comm.example.dao.CustomerDAO;
 import comm.example.dao.CustomerDAOImpl;
 import comm.example.model.Customer;
 
-@WebServlet("/add.do")
-public class AddCustomerController extends HttpServlet {
+/**
+ * Servlet implementation class SaveCustomerController
+ */
+@WebServlet("/save.do")
+public class SaveCustomerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String fName, lName, address, customerType;
-	private List<String> errors = null;
+	CustomerDAO dao;
 
-	public AddCustomerController() {
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
+		dao = new CustomerDAOImpl();
+	}
+
+	private List<String> errors;
+	private String fName, lName, address;
+	private int id;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public SaveCustomerController() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doProcess(request, response);
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -42,6 +66,7 @@ public class AddCustomerController extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		errors = new ArrayList<String>();
+		id = Integer.parseInt(request.getParameter("id"));
 		fName = request.getParameter("fName");
 		if ((fName == null) || (fName.length() < 5)) {
 			errors.add("First name cannot be null or less than 5 chars");
@@ -54,19 +79,17 @@ public class AddCustomerController extends HttpServlet {
 		if ((address.equals(""))) {
 			errors.add("Enter address");
 		}
-		customerType = request.getParameter("custType");
-		if (customerType.equals("Unknown")) {
-			errors.add("Select a customer type");
-		}
 		if (!errors.isEmpty()) {
 			request.setAttribute("ERROR", errors);
-			RequestDispatcher rd = request.getRequestDispatcher("add-customer.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("update-form.jsp");
 			rd.forward(request, response);
 		} else {
-			Customer c = new Customer(fName, lName, address, customerType);
+			Customer c = dao.getCustomerById(id);
+			c.setFirstName(fName);
+			c.setLastName(lName);
+			c.setAddress(address);
 			request.setAttribute("SUCCESS", c);
-			CustomerDAO dao = new CustomerDAOImpl();
-			dao.createCustomer(c);
+			dao.updateCustomer(c);
 			RequestDispatcher rd = request.getRequestDispatcher("list.do");
 			rd.include(request, response);
 		}

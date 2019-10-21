@@ -1,6 +1,7 @@
 package comm.example.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,51 +15,55 @@ import comm.example.dao.CustomerDAOImpl;
 import comm.example.model.Customer;
 
 /**
- * Servlet implementation class DeleteCustomerController
+ * Servlet implementation class SearchCustomerController
  */
-@WebServlet("/delete.do")
-public class DeleteCustomerController extends HttpServlet {
+@WebServlet("/search.do")
+public class SearchCustomerController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	CustomerDAO dao;
-       
-    @Override
+
+	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
+		super.init();
 		dao = new CustomerDAOImpl();
 	}
 
 	/**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DeleteCustomerController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public SearchCustomerController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doProcess(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doProcess(request, response);
 	}
 
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int customerId = Integer.parseInt(request.getParameter("id"));
-		Customer c = dao.getCustomerById(customerId);
-		dao.deleteCustomer(c);
-		RequestDispatcher view = request.getRequestDispatcher("list.do");
+		
+		List<Customer> list = dao.searchCustomer(request.getParameter("searchString"));
+		request.setAttribute("SearchResult", list);
+		RequestDispatcher view = request.getRequestDispatcher("search-list.jsp");
 		view.forward(request, response);
-			
 	}
 
 }

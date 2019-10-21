@@ -40,4 +40,11 @@ public class Customer {
 		this.address = address;
 		this.customerType = customerType;
 	}
+
+	public Customer(String firstName, String lastName, String address) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+	}
 }

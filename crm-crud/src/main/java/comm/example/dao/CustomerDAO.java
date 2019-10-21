@@ -9,4 +9,6 @@ public interface CustomerDAO {
 	public void createCustomer(Customer customer);
 	public void deleteCustomer(Customer customer);
 	public Customer getCustomerById(int id);
+	public void updateCustomer(Customer customer);
+	public List<Customer> searchCustomer(String searchString);
 }

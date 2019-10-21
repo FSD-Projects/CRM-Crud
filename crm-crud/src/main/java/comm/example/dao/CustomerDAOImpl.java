@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 import comm.example.factory.HibernateUtilFactory;
@@ -48,5 +49,26 @@ public class CustomerDAOImpl implements CustomerDAO {
 		Customer c = session.get(Customer.class, id);
 		session.getTransaction().commit();
 		return c;
+	}
+
+	@Override
+	public void updateCustomer(Customer customer) {
+		// TODO Auto-generated method stub
+		session = HibernateUtilFactory.getMySession();
+		session.getTransaction().begin();
+		session.merge(customer);
+		session.getTransaction().commit();	
+	}
+
+	@Override
+	public List<Customer> searchCustomer(String searchString) {
+		// TODO Auto-generated method stub;
+		session.getTransaction().begin();
+		Query query = session.createQuery("from Customer c where firstName like concat('%',:searchString,'%') or lastName like concat('%',:searchString,'%') or address like concat('%',:searchString,'%') or customerType like concat('%',:searchString,'%')");
+		query.setParameter("searchString", searchString);
+		session.getTransaction().commit();
+		@SuppressWarnings("unchecked")
+		List <Customer> list = query.getResultList();
+		return list;
 	}
 }

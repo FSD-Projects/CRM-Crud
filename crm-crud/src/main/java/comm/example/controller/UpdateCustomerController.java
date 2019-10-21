@@ -1,7 +1,6 @@
 package comm.example.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,29 +14,26 @@ import comm.example.dao.CustomerDAOImpl;
 import comm.example.model.Customer;
 
 /**
- * Servlet implementation class ListCustomerController
+ * Servlet implementation class UpdateCustomerController
  */
-@WebServlet("/list.do")
-public class ListCustomerController extends HttpServlet {
-
-	private List<Customer> list;
-	private CustomerDAO dao;
+@WebServlet("/update.do")
+public class UpdateCustomerController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	CustomerDAO dao;
 
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
+		dao = new CustomerDAOImpl();
 	}
-
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ListCustomerController() {
+	public UpdateCustomerController() {
 		super();
 		// TODO Auto-generated constructor stub
-		dao = new CustomerDAOImpl();
 	}
 
 	/**
@@ -60,11 +56,12 @@ public class ListCustomerController extends HttpServlet {
 		doProcess(request, response);
 	}
 
-	protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doProcess(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		list = dao.getAllCustomers();
-		request.setAttribute("customers", list);
-		RequestDispatcher view = request.getRequestDispatcher("list-customers.jsp");
+		Customer c = dao.getCustomerById(Integer.parseInt(request.getParameter("id")));
+		request.setAttribute("tempCustomer", c);
+		RequestDispatcher view = request.getRequestDispatcher("update-form.jsp");
 		view.forward(request, response);
 	}
 

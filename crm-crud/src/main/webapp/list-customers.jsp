@@ -20,6 +20,11 @@
 <body>
 	<h3>Customer Relationship Management</h3>
 	<a href="add-customer.jsp"><button>Add Customer</button></a>
+	
+	<form action="search.do">
+		<input type="text" name="searchString" placeholder="Search" />
+		<button>Search</button>
+	</form>
 	<table class="table">
 		<thead class="black white-text">
 			<tr>
@@ -27,6 +32,7 @@
 				<th scope="col">Last Name</th>
 				<th scope="col">Address</th>
 				<th scope="col">Customer Type</th>
+				<th colspan="2" scope="col">Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -36,6 +42,10 @@
 					<td>${tempCustomer.lastName}</td>
 					<td>${tempCustomer.address}</td>
 					<td>${tempCustomer.customerType}</td>
+					<td><a href="delete.do?id=<c:out value="${tempCustomer.id}"/>"><button
+								class="btn btn-danger">DELETE</button></a></td>
+					<td><a href="update.do?id=<c:out value="${tempCustomer.id}"/>"><button
+								class="btn btn-success">UPDATE</button></a></td>
 				</tr>
 			</c:forEach>
 			<%-- <%
