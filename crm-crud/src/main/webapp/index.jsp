@@ -1,7 +1,7 @@
 <html>
 <body>
 <%
-response.sendRedirect("list-customers.jsp");
+response.sendRedirect("list-controller.do");
 %>
 </body>
 </html>

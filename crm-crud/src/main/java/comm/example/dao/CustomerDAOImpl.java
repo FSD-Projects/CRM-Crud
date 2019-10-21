@@ -31,4 +31,22 @@ public class CustomerDAOImpl implements CustomerDAO {
 		session.getTransaction().commit();
 	}
 
+	@Override
+	public void deleteCustomer(Customer customer) {
+		// TODO Auto-generated method stub
+		session = HibernateUtilFactory.getMySession();
+		session.getTransaction().begin();
+		session.remove(customer);
+		session.getTransaction().commit();
+	}
+
+	@Override
+	public Customer getCustomerById(int id) {
+		// TODO Auto-generated method stub
+		session = HibernateUtilFactory.getMySession();
+		session.getTransaction().begin();
+		Customer c = session.get(Customer.class, id);
+		session.getTransaction().commit();
+		return c;
+	}
 }

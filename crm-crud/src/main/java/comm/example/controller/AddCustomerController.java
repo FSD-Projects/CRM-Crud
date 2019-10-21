@@ -67,7 +67,7 @@ public class AddCustomerController extends HttpServlet {
 			request.setAttribute("SUCCESS", c);
 			CustomerDAO dao = new CustomerDAOImpl();
 			dao.createCustomer(c);
-			RequestDispatcher rd = request.getRequestDispatcher("list-customers.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("list-controller.do");
 			rd.include(request, response);
 		}
 	}
